@@ -57,6 +57,21 @@ function HomePage() {
         dataIndex: 'numeroPiece',
         key: 'numeroPiece',
       },
+      {
+        title: 'Date Naissance',
+        dataIndex: 'dateNaissance',
+        key: 'dateNaissance',
+      },
+      {
+        title: 'Lieu Naissance',
+        dataIndex: 'lieuNaissance',
+        key: 'lieuNaissance',
+      },
+      {
+        title: 'Sexe',
+        dataIndex: 'sexe',
+        key: 'sexe',
+      },
       Table.EXPAND_COLUMN,
     ];
   }, []);
@@ -89,7 +104,14 @@ function HomePage() {
                 {Object.entries(record)
                   .filter(
                     ([key, _]) =>
-                      !['nom', 'prenom', 'type', 'numeroPiece'].includes(key)
+                      ![
+                        'nom',
+                        'prenom',
+                        'type',
+                        'numeroPiece',
+                        'dateNaissance',
+                        'sexe',
+                      ].includes(key)
                   )
                   .map(([key, val]) => (
                     <span>
