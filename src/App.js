@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from 'axios';
+import { Suspense } from 'react';
+import {
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements,
+  redirect,
+} from 'react-router-dom';
+import AppLayout from './components/AppLayout';
+import HomePage from './pages/home';
+
+const TIMEOUT = 1 * 60 * 1000;
+axios.defaults.timeout = TIMEOUT;
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route path='/' element={<AppLayout />}>
+      <Route index element={<HomePage />} />
+
+      <Route path='*' loader={() => redirect('/')} />
+    </Route>
+  )
+);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Suspense fallback={<div></div>}>
+      <RouterProvider router={router} />
+    </Suspense>
   );
 }
 
