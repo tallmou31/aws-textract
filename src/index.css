@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  --orange: #fb7900;
+  --orange: rgb(203, 123, 19);
 }
 
 body {
@@ -79,4 +79,8 @@ code {
   border-color: var(
     --orange
   ); /* Assuming you define the CSS variable '--orange' elsewhere */
+}
+
+.ant-btn-primary {
+  background-color: #1677ff;
 }

@@ -9,21 +9,34 @@ function Uploader({ setOpen, upload }) {
 
   const [file, setFile] = useState(null);
   const onSubmit = () => {
-    setLoader(true);
-    upload(file)
-      .then((res) => {
-        Modal.success({
-          content: 'Pièce chargée avec succès',
-        });
-        setOpen(false, true);
-      })
-      .catch((err) => {
-        console.log(err);
+    if (file) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (!['pdf', 'jpeg', 'jpg', 'png'].includes(ext)) {
         Modal.error({
-          content: 'Erreur chargement',
+          content: 'Un fichier PDF ou image(PNG, JPEG, JPG) est requis',
         });
-      })
-      .finally(() => setLoader(false));
+        return;
+      }
+      setLoader(true);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        upload({ file_data: reader.result.split(',')[1], file_name: file.name })
+          .then((res) => {
+            Modal.success({
+              content: 'Pièce chargée avec succès',
+            });
+            setOpen(false, true);
+          })
+          .catch((err) => {
+            console.log(err);
+            Modal.error({
+              content: 'Erreur chargement',
+            });
+          })
+          .finally(() => setLoader(false));
+      };
+    }
   };
 
   const props = {

@@ -1,4 +1,4 @@
-import { Modal, Table } from 'antd';
+import { Modal, Spin, Table } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEntities } from '../redux/piece.reducer';
@@ -16,6 +16,8 @@ const getTitle = (val) => {
   );
 };
 
+const textractDuration = 15; // En seconde
+
 function HomePage() {
   const loading = useSelector((state) => state.piece.loading);
 
@@ -24,14 +26,35 @@ function HomePage() {
 
   const dispatch = useDispatch();
 
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    dispatch(getEntities());
-  }, [dispatch]);
+    let intervalId;
+
+    if (count > 0) {
+      intervalId = setInterval(() => {
+        setCount((prevCount) => prevCount - 1);
+      }, 1000); // 1000 milliseconds = 1 second
+    }
+
+    if (count === 0) {
+      clearInterval(intervalId);
+      dispatch(getEntities());
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [count, dispatch]);
+
+  const startCountdown = () => {
+    setCount(textractDuration);
+  };
 
   const setModalUploadOpen = (val, changed = false) => {
     setUploadModalOpen(val);
     if (changed) {
-      dispatch(getEntities());
+      startCountdown();
     }
   };
 
@@ -92,6 +115,15 @@ function HomePage() {
         </div>
       </div>
       <div>
+        {count > 0 && (
+          <div className='flex items-center justify-center gap-3 p-3'>
+            <Spin />
+            <span>
+              Textract en cours{' '}
+              <span className='font-bold'>{count} secondes</span>
+            </span>
+          </div>
+        )}
         <Table
           loading={loading}
           dataSource={pieces}

@@ -16,7 +16,7 @@ const initialState = {
 // Actions
 
 export const getEntities = createAsyncThunk('piece/fetch', async () => {
-  return await axios.get(Config.API_GET_PIECES);
+  return await axios.get(Config.AWS_API_URL);
 });
 
 export const pieceSlice = createSlice({
