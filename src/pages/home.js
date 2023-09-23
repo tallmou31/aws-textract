@@ -5,6 +5,7 @@ import { getEntities } from '../redux/piece.reducer';
 import Uploader from '../components/Uploader';
 import PieceService from '../services/piece.service';
 import { UploadOutlined } from '@ant-design/icons';
+import moment from 'moment';
 const getTitle = (val) => {
   return (
     val
@@ -16,7 +17,7 @@ const getTitle = (val) => {
   );
 };
 
-const textractDuration = 15; // En seconde
+const textractDuration = 5; // En seconde
 
 function HomePage() {
   const loading = useSelector((state) => state.piece.loading);
@@ -95,6 +96,11 @@ function HomePage() {
         dataIndex: 'sexe',
         key: 'sexe',
       },
+      {
+        title: 'Date Textract',
+        dataIndex: 'dateTextract',
+        key: 'dateTextract',
+      },
       Table.EXPAND_COLUMN,
     ];
   }, []);
@@ -126,7 +132,11 @@ function HomePage() {
         )}
         <Table
           loading={loading}
-          dataSource={pieces}
+          dataSource={[...pieces].sort(
+            (a, b) =>
+              moment(b.dateTextract, 'DD/MM/YYYY HH:mm:ss') -
+              moment(a.dateTextract, 'DD/MM/YYYY HH:mm:ss')
+          )}
           rowKey={(p) => p.id}
           columns={columns}
           pagination={false}
@@ -143,6 +153,7 @@ function HomePage() {
                         'numeroPiece',
                         'dateNaissance',
                         'sexe',
+                        'dateTextract',
                       ].includes(key)
                   )
                   .map(([key, val]) => (
