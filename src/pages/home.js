@@ -2,6 +2,8 @@ import { Modal, Spin, Table } from 'antd';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEntities } from '../redux/piece.reducer';
+import { getEntities as getErrors } from '../redux/error.reducer';
+
 import Uploader from '../components/Uploader';
 import PieceService from '../services/piece.service';
 import { UploadOutlined } from '@ant-design/icons';
@@ -41,6 +43,7 @@ function HomePage() {
     if (count === 0) {
       clearInterval(intervalId);
       dispatch(getEntities());
+      dispatch(getErrors());
     }
 
     return () => {
@@ -139,7 +142,7 @@ function HomePage() {
           )}
           rowKey={(p) => p.id}
           columns={columns}
-          pagination={false}
+          pagination={null}
           expandable={{
             expandedRowRender: (record) => (
               <p style={{ margin: 0 }} className='flex flex-col'>

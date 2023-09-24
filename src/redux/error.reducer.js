@@ -5,7 +5,7 @@ import {
   isPending,
   isRejected,
 } from '@reduxjs/toolkit';
-import PieceService from '../services/piece.service';
+import ErrorService from '../services/error.service';
 
 const initialState = {
   loading: false,
@@ -14,12 +14,12 @@ const initialState = {
 
 // Actions
 
-export const getEntities = createAsyncThunk('piece/fetch', async () => {
-  return await PieceService.getAll();
+export const getEntities = createAsyncThunk('error/fetch', async () => {
+  return await ErrorService.getAll();
 });
 
-export const pieceSlice = createSlice({
-  name: 'piece',
+export const errorSlice = createSlice({
+  name: 'error',
   initialState,
   extraReducers(builder) {
     builder
@@ -41,4 +41,4 @@ export const pieceSlice = createSlice({
   },
 });
 
-export default pieceSlice.reducer;
+export default errorSlice.reducer;

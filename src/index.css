@@ -84,3 +84,8 @@ code {
 .ant-btn-primary {
   background-color: #1677ff;
 }
+
+.ant-menu-item {
+  display: flex !important;
+  align-items: center;
+}

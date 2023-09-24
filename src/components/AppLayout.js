@@ -2,19 +2,16 @@ import React from 'react';
 import { Image, Layout, Menu } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.png';
+import { useSelector } from 'react-redux';
 
 const { Header, Content, Footer } = Layout;
 function AppLayout() {
   const location = useLocation();
   const navigate = useNavigate();
+  const nbErrors = useSelector((state) => state.error.entities.length);
 
   const navigateRoute = (e) => {
-    if (e.key === '/players') {
-      //window.location.href = '/players';
-      navigate(e.key);
-    } else {
-      navigate(e.key);
-    }
+    navigate(e.key);
   };
 
   return (
@@ -44,6 +41,15 @@ function AppLayout() {
             {
               key: '/',
               label: 'Accueil',
+            },
+            {
+              key: '/errors',
+              label: (
+                <span className='flex items-center gap-2'>
+                  <span>Erreur</span>{' '}
+                  <span className='p-2 bg-red-600'>{nbErrors}</span>
+                </span>
+              ),
             },
           ]}
         />
